@@ -1,8 +1,10 @@
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import globalStyle from '../../assets/styles/globalStyle';
+
 const Home = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
       <View>
         <Text>Home Screen</Text>
       </View>
