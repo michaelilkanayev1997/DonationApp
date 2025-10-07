@@ -5,6 +5,7 @@ import globalStyle from '../../assets/styles/globalStyle';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import Tab from '../../components/Tab/Tab';
+import Badge from '../../components/Badge/Badge';
 
 const Home: FC = () => {
   return (
@@ -13,6 +14,7 @@ const Home: FC = () => {
       <Tab title="Active" isInactive={false} onPress={() => {}} />
       <Tab title="Inactive" isInactive onPress={() => {}} />
       <Button title="Press Me" onPress={() => {}} />
+      <Badge title="Environment" />
     </SafeAreaView>
   );
 };
