@@ -1,13 +1,13 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { FC } from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 import globalStyle from '../../assets/styles/globalStyle';
+import Header from '../../components/Header/Header';
 
-const Home = () => {
+const Home: FC = () => {
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
-      <View>
-        <Text>Home Screen</Text>
-      </View>
+      <Header title="Michael Magic" type={1} />
     </SafeAreaView>
   );
 };
