@@ -8,16 +8,12 @@ import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import Tab from '../../components/Tab/Tab';
 import Badge from '../../components/Badge/Badge';
+import Search from '../../components/Search/Search';
 
 const Home: FC = () => {
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
-      <Header title="Michael Magic" type={1} />
-      <Tab title="Active" isInactive={false} onPress={() => {}} />
-      <Tab title="Inactive" isInactive onPress={() => {}} />
-      <Button title="Press Me" onPress={() => {}} />
-      <Badge title="Environment" />
-      <FontAwesomeIcon icon={faSearch} size={32} color="black" />
+      <Search onSearch={value => console.log(value)} />
     </SafeAreaView>
   );
 };
