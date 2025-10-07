@@ -3,11 +3,13 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 
 import globalStyle from '../../assets/styles/globalStyle';
 import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
 
 const Home: FC = () => {
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
       <Header title="Michael Magic" type={1} />
+      <Button title="Donate" isDisabled={false} />
     </SafeAreaView>
   );
 };
