@@ -7,9 +7,10 @@ import { scaleFontSize } from '../../assets/styles/scaling';
 interface HeaderProps {
   title?: string;
   type?: number;
+  color?: string;
 }
 
-const Header: FC<HeaderProps> = ({ title = '', type }) => {
+const Header: FC<HeaderProps> = ({ title = '', type, color = '#000000' }) => {
   const stylesToApply = () => {
     switch (type) {
       case 1:
@@ -25,7 +26,7 @@ const Header: FC<HeaderProps> = ({ title = '', type }) => {
 
   return (
     <View>
-      <Text style={stylesToApply()}>{title}</Text>
+      <Text style={[stylesToApply(), color && { color: color }]}>{title}</Text>
     </View>
   );
 };
