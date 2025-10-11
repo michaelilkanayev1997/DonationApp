@@ -11,9 +11,13 @@ import { getFontFamily } from '../../assets/fonts/helper';
 
 interface SearchProps {
   onSearch?: (text: string) => void;
+  placeholder?: string;
 }
 
-const Search: FC<SearchProps> = ({ onSearch = () => {} }) => {
+const Search: FC<SearchProps> = ({
+  onSearch = () => {},
+  placeholder = 'Search...',
+}) => {
   const [search, setSearch] = useState('');
   const textInputRef = useRef<TextInput>(null);
   const handleFocus = () => {
@@ -39,7 +43,7 @@ const Search: FC<SearchProps> = ({ onSearch = () => {} }) => {
         }}
         ref={textInputRef}
         style={styles.searchInput}
-        placeholder="Search..."
+        placeholder={placeholder}
       />
     </Pressable>
   );
