@@ -23,6 +23,7 @@ import {
 import globalStyle from '../../assets/styles/globalStyle';
 
 import { StackNavigationProp } from '@react-navigation/stack';
+import { updateSelectedCategoryId } from '../../redux/reducers/Categories';
 
 type HomeProps = {
   navigation: StackNavigationProp<any>;
@@ -30,6 +31,7 @@ type HomeProps = {
 
 const Home: FC<HomeProps> = ({ navigation }) => {
   const user = useSelector((state: RootState) => state.user);
+  const categories = useSelector((state: RootState) => state.categories);
   const dispatch = useDispatch();
 
   return (
@@ -60,6 +62,26 @@ const Home: FC<HomeProps> = ({ navigation }) => {
             resizeMode={'contain'}
           />
         </Pressable>
+        <View style={styles.categoryHeader}>
+          <Header title={'Select Category'} type={2} />
+        </View>
+        <View style={styles.categories}>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={categories.categories}
+            renderItem={({ item }) => (
+              <View style={styles.categoryItem} key={item.categoryId}>
+                <Tab
+                  tabId={item.categoryId}
+                  onPress={value => dispatch(updateSelectedCategoryId(value))}
+                  title={item.name}
+                  isInactive={item.categoryId !== categories.selectedCategoryId}
+                />
+              </View>
+            )}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
