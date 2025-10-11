@@ -9,12 +9,18 @@ import {
 } from '../../assets/styles/scaling';
 
 interface TabProps {
+  tabId: number;
   title?: string;
   isInactive?: boolean;
-  onPress: () => void;
+  onPress: (value: number) => void;
 }
 
-const Tab: FC<TabProps> = ({ title = '', isInactive = false, onPress }) => {
+const Tab: FC<TabProps> = ({
+  tabId,
+  title = '',
+  isInactive = false,
+  onPress,
+}) => {
   const [width, setWidth] = useState(0);
   const textRef = useRef<Text>(null);
   const paddingHorizontal = 33;
@@ -24,7 +30,7 @@ const Tab: FC<TabProps> = ({ title = '', isInactive = false, onPress }) => {
     <Pressable
       disabled={isInactive}
       style={[styles.tab, isInactive && styles.inactiveTab, tabWidth]}
-      onPress={() => onPress()}
+      onPress={() => onPress(tabId)}
     >
       <Text
         onTextLayout={event => {
