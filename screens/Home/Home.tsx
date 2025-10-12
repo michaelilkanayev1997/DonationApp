@@ -9,21 +9,23 @@ import {
   FlatList,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StyleSheet } from 'react-native';
 
 import Header from '../../components/Header/Header';
 import Search from '../../components/Search/Search';
 import Tab from '../../components/Tab/Tab';
 import { RootState } from '../../redux/store';
-import { StyleSheet } from 'react-native';
 import {
   horizontalScale,
   scaleFontSize,
   verticalScale,
 } from '../../assets/styles/scaling';
 import globalStyle from '../../assets/styles/globalStyle';
-
-import { StackNavigationProp } from '@react-navigation/stack';
-import { updateSelectedCategoryId } from '../../redux/reducers/Categories';
+import {
+  Category,
+  updateSelectedCategoryId,
+} from '../../redux/reducers/Categories';
 
 type HomeProps = {
   navigation: StackNavigationProp<any>;
@@ -32,7 +34,38 @@ type HomeProps = {
 const Home: FC<HomeProps> = ({ navigation }) => {
   const user = useSelector((state: RootState) => state.user);
   const categories = useSelector((state: RootState) => state.categories);
+
   const dispatch = useDispatch();
+
+  const [donationItems, setDonationItems] = useState([]);
+  const [categoryPage, setCategoryPage] = useState(1);
+  const [categoryList, setCategoryList] = useState<
+    typeof categories.categories
+  >([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
+  const categoryPageSize = 4;
+
+  useEffect(() => {
+    setIsLoadingCategories(true);
+    setCategoryList(
+      pagination(categories.categories, categoryPage, categoryPageSize),
+    );
+    setCategoryPage(prev => prev + 1);
+    setIsLoadingCategories(false);
+  }, []);
+
+  const pagination = (
+    items: Category[],
+    pageNumber: number,
+    pageSize: number,
+  ) => {
+    const startIndex = (pageNumber - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    if (startIndex >= items.length) {
+      return [];
+    }
+    return items.slice(startIndex, endIndex);
+  };
 
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
@@ -67,9 +100,30 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         </View>
         <View style={styles.categories}>
           <FlatList
+            onEndReachedThreshold={0.5}
+            onEndReached={() => {
+              if (isLoadingCategories) {
+                return;
+              }
+              console.log(
+                'User has reached the end and we are getting more data for page number ',
+                categoryPage,
+              );
+              setIsLoadingCategories(true);
+              let newData = pagination(
+                categories.categories,
+                categoryPage,
+                categoryPageSize,
+              );
+              if (newData.length > 0) {
+                setCategoryList(prevState => [...prevState, ...newData]);
+                setCategoryPage(prevState => prevState + 1);
+              }
+              setIsLoadingCategories(false);
+            }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={categories.categories}
+            data={categoryList}
             renderItem={({ item }) => (
               <View style={styles.categoryItem} key={item.categoryId}>
                 <Tab
