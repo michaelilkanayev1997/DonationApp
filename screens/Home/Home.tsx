@@ -34,6 +34,9 @@ type HomeProps = {
 const Home: FC<HomeProps> = ({ navigation }) => {
   const user = useSelector((state: RootState) => state.user);
   const categories = useSelector((state: RootState) => state.categories);
+  const donations = useSelector((state: RootState) => state.donations);
+
+  console.log('wow:', donations);
 
   const dispatch = useDispatch();
 
