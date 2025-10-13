@@ -5,11 +5,13 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import userReducer from './reducers/User';
 import categoriesReducer from './reducers/Categories';
+import donationsReducer from './reducers/Donations';
 
 // Combine all your reducers
 const rootReducer = combineReducers({
   user: userReducer,
   categories: categoriesReducer,
+  donations: donationsReducer,
 });
 
 // Configure redux-persist
