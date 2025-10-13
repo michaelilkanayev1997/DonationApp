@@ -8,9 +8,15 @@ interface HeaderProps {
   title?: string;
   type?: number;
   color?: string;
+  numberOfLines?: number;
 }
 
-const Header: FC<HeaderProps> = ({ title = '', type, color = '#000000' }) => {
+const Header: FC<HeaderProps> = ({
+  title = '',
+  type,
+  color = '#000000',
+  numberOfLines,
+}) => {
   const stylesToApply = () => {
     switch (type) {
       case 1:
@@ -26,7 +32,12 @@ const Header: FC<HeaderProps> = ({ title = '', type, color = '#000000' }) => {
 
   return (
     <View>
-      <Text style={[stylesToApply(), color && { color: color }]}>{title}</Text>
+      <Text
+        style={[stylesToApply(), color && { color: color }]}
+        numberOfLines={numberOfLines ? numberOfLines : 2}
+      >
+        {title}
+      </Text>
     </View>
   );
 };
