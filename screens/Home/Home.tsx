@@ -36,17 +36,24 @@ const Home: FC<HomeProps> = ({ navigation }) => {
   const categories = useSelector((state: RootState) => state.categories);
   const donations = useSelector((state: RootState) => state.donations);
 
-  console.log('wow:', donations);
-
   const dispatch = useDispatch();
 
-  const [donationItems, setDonationItems] = useState([]);
+  const [donationItems, setDonationItems] = useState<typeof donations.items>(
+    [],
+  );
   const [categoryPage, setCategoryPage] = useState(1);
   const [categoryList, setCategoryList] = useState<
     typeof categories.categories
   >([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
   const categoryPageSize = 4;
+
+  useEffect(() => {
+    const items = donations.items.filter(value =>
+      value.categoryIds.includes(categories.selectedCategoryId),
+    );
+    setDonationItems(items);
+  }, [categories.selectedCategoryId]);
 
   useEffect(() => {
     setIsLoadingCategories(true);

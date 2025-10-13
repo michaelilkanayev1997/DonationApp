@@ -28,14 +28,12 @@ const Tab: FC<TabProps> = ({
 
   return (
     <Pressable
-      disabled={isInactive}
       style={[styles.tab, isInactive && styles.inactiveTab, tabWidth]}
       onPress={() => onPress(tabId)}
     >
       <Text
         onTextLayout={event => {
-          const { width } = event.nativeEvent.lines[0];
-          setWidth(width);
+          setWidth(event.nativeEvent.lines[0].width);
         }}
         ref={textRef}
         style={[styles.title, isInactive && styles.inactiveTitle]}
