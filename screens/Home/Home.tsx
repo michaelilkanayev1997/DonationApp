@@ -151,29 +151,31 @@ const Home: FC<HomeProps> = ({ navigation }) => {
         </View>
         {donationItems.length > 0 && (
           <View style={styles.donationItemsContainer}>
-            {donationItems.map(value => (
-              <View
-                key={value.donationItemId}
-                style={styles.singleDonationItem}
-              >
-                <SingleDonationItem
-                  onPress={selectedDonationId => {
-                    console.log(selectedDonationId);
-                    dispatch(updateSelectedDonationId(selectedDonationId));
-                    navigation.navigate(Routes.SingleDonationItem);
-                  }}
-                  donationItemId={value.donationItemId}
-                  uri={value.image}
-                  donationTitle={value.name}
-                  badgeTitle={
-                    categories.categories.filter(
-                      val => val.categoryId === categories.selectedCategoryId,
-                    )[0].name
-                  }
-                  price={parseFloat(value.price)}
-                />
-              </View>
-            ))}
+            {donationItems.map(value => {
+              const categoryInformation = categories.categories.find(
+                val => val.categoryId === categories.selectedCategoryId,
+              );
+              return (
+                <View
+                  key={value.donationItemId}
+                  style={styles.singleDonationItem}
+                >
+                  <SingleDonationItem
+                    onPress={selectedDonationId => {
+                      dispatch(updateSelectedDonationId(selectedDonationId));
+                      navigation.navigate(Routes.SingleDonationItem, {
+                        categoryInformation,
+                      });
+                    }}
+                    donationItemId={value.donationItemId}
+                    uri={value.image}
+                    donationTitle={value.name}
+                    badgeTitle={categoryInformation?.name}
+                    price={parseFloat(value.price)}
+                  />
+                </View>
+              );
+            })}
           </View>
         )}
       </ScrollView>

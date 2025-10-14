@@ -13,7 +13,7 @@ import { horizontalScale, verticalScale } from '../../assets/styles/scaling';
 
 interface SingleDonationItemProps {
   uri: string;
-  badgeTitle: string;
+  badgeTitle?: string;
   donationTitle: string;
   price: number;
   onPress?: (donationItemId: number) => void;
