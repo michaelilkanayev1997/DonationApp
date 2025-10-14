@@ -26,6 +26,9 @@ import {
   Category,
   updateSelectedCategoryId,
 } from '../../redux/reducers/Categories';
+import SingleDonationItem from '../../components/SingleDonationItem/SingleDonationItem';
+import { updateSelectedDonationId } from '../../redux/reducers/Donations';
+import { Routes } from '../../navigation/Routes';
 
 type HomeProps = {
   navigation: StackNavigationProp<any>;
@@ -146,6 +149,33 @@ const Home: FC<HomeProps> = ({ navigation }) => {
             )}
           />
         </View>
+        {donationItems.length > 0 && (
+          <View style={styles.donationItemsContainer}>
+            {donationItems.map(value => (
+              <View
+                key={value.donationItemId}
+                style={styles.singleDonationItem}
+              >
+                <SingleDonationItem
+                  onPress={selectedDonationId => {
+                    console.log(selectedDonationId);
+                    dispatch(updateSelectedDonationId(selectedDonationId));
+                    navigation.navigate(Routes.SingleDonationItem);
+                  }}
+                  donationItemId={value.donationItemId}
+                  uri={value.image}
+                  donationTitle={value.name}
+                  badgeTitle={
+                    categories.categories.filter(
+                      val => val.categoryId === categories.selectedCategoryId,
+                    )[0].name
+                  }
+                  price={parseFloat(value.price)}
+                />
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
