@@ -28,6 +28,7 @@ import {
 } from '../../redux/reducers/Categories';
 import SingleDonationItem from '../../components/SingleDonationItem/SingleDonationItem';
 import { updateSelectedDonationId } from '../../redux/reducers/Donations';
+import { Routes } from '../../navigation/Routes';
 
 type HomeProps = {
   navigation: StackNavigationProp<any>;
@@ -159,7 +160,7 @@ const Home: FC<HomeProps> = ({ navigation }) => {
                   onPress={selectedDonationId => {
                     console.log(selectedDonationId);
                     dispatch(updateSelectedDonationId(selectedDonationId));
-                    // navigation.navigate(Routes.SingleDonationItem);
+                    navigation.navigate(Routes.SingleDonationItem);
                   }}
                   donationItemId={value.donationItemId}
                   uri={value.image}
