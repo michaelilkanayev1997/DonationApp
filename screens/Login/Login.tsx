@@ -12,8 +12,14 @@ import Button from '../../components/Button/Button';
 import globalStyle from '../../assets/styles/globalStyle';
 import { horizontalScale } from '../../assets/styles/scaling';
 import Input from '../../components/Input/Input';
+import { Routes } from '../../navigation/Routes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const Login: FC = () => {
+type LoginProps = {
+  navigation: StackNavigationProp<any>;
+};
+
+const Login: FC<LoginProps> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -49,7 +55,12 @@ const Login: FC = () => {
           <Button title="Login" onPress={() => {}} />
         </View>
 
-        <Pressable style={styles.registrationButton}>
+        <Pressable
+          style={styles.registrationButton}
+          onPress={() => {
+            navigation.navigate(Routes.Registration);
+          }}
+        >
           <Header color="#156CF7" type={3} title="Don't have an account?" />
         </Pressable>
       </ScrollView>
