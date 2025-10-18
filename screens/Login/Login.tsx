@@ -5,15 +5,21 @@ import {
   Pressable,
   View,
   StyleSheet,
+  Text,
 } from 'react-native';
 
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import globalStyle from '../../assets/styles/globalStyle';
-import { horizontalScale } from '../../assets/styles/scaling';
+import {
+  horizontalScale,
+  scaleFontSize,
+  verticalScale,
+} from '../../assets/styles/scaling';
 import Input from '../../components/Input/Input';
 import { Routes } from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { loginUser } from '../../api/user';
 
 type LoginProps = {
   navigation: StackNavigationProp<any>;
@@ -22,6 +28,30 @@ type LoginProps = {
 const Login: FC<LoginProps> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleLogin = async (): Promise<void> => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const result = await loginUser(email, password);
+
+      if (!result.status) {
+        // Login failed
+        setError(result.error);
+      } else {
+        // Login successful
+        console.log('User logged in:', result.data);
+        navigation.navigate(Routes.Home);
+      }
+    } catch (err) {
+      setError('Unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
@@ -50,9 +80,13 @@ const Login: FC<LoginProps> = ({ navigation }) => {
             onChangeText={setPassword}
           />
         </View>
-
+        {error.length > 0 && <Text style={styles.error}>{error}</Text>}
         <View style={globalStyle.marginBottom24}>
-          <Button title="Login" onPress={() => {}} />
+          <Button
+            title={loading ? 'Logging in...' : 'Login'}
+            onPress={handleLogin}
+            isDisabled={loading || email.length < 5 || password.length < 8}
+          />
         </View>
 
         <Pressable
@@ -76,6 +110,12 @@ const styles = StyleSheet.create({
   },
   registrationButton: {
     alignItems: 'center',
+  },
+  error: {
+    fontFamily: 'Inter',
+    fontSize: scaleFontSize(16),
+    color: '#FF0000',
+    marginBottom: verticalScale(24),
   },
 });
 
