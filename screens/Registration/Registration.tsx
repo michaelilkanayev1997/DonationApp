@@ -12,6 +12,7 @@ import {
   scaleFontSize,
   verticalScale,
 } from '../../assets/styles/scaling';
+import { createUser } from '../../api/user';
 
 type RegistrationProps = {
   navigation: StackNavigationProp<any>;
@@ -24,7 +25,17 @@ const Registration: FC<RegistrationProps> = ({ navigation }) => {
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const handleRegister = async () => {};
+  const handleRegister = async () => {
+    const res = await createUser(fullName, email, password);
+    if ('error' in res) {
+      setError(res.error);
+      setSuccess('');
+    } else {
+      setSuccess('Registration successful!');
+      setError('');
+      navigation.goBack();
+    }
+  };
 
   return (
     <SafeAreaView style={[globalStyle.backgroundWhite, globalStyle.flex]}>
@@ -70,13 +81,7 @@ const Registration: FC<RegistrationProps> = ({ navigation }) => {
         {success.length > 0 && <Text style={styles.success}>{success}</Text>}
 
         <View style={globalStyle.marginBottom24}>
-          <Button
-            title="Registration"
-            isDisabled={
-              fullName.length <= 2 || email.length <= 5 || password.length < 8
-            }
-            onPress={handleRegister}
-          />
+          <Button title="Registration" onPress={handleRegister} />
         </View>
       </ScrollView>
     </SafeAreaView>
