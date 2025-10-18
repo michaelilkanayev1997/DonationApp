@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import Input from '../../components/Input/Input';
 import Header from '../../components/Header/Header';
@@ -25,15 +26,17 @@ const Registration: FC<RegistrationProps> = ({ navigation }) => {
   const [success, setSuccess] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const handleRegister = async () => {
-    const res = await createUser(fullName, email, password);
-    if ('error' in res) {
-      setError(res.error);
+  const handleRegister = async (): Promise<void> => {
+    const user: FirebaseAuthTypes.UserCredential | { error: string } =
+      await createUser(fullName, email, password);
+
+    if ('error' in user) {
+      setError(user.error);
       setSuccess('');
     } else {
-      setSuccess('Registration successful!');
       setError('');
-      navigation.goBack();
+      setSuccess('You have successfully registered');
+      setTimeout(() => navigation.goBack(), 3000);
     }
   };
 
@@ -81,7 +84,13 @@ const Registration: FC<RegistrationProps> = ({ navigation }) => {
         {success.length > 0 && <Text style={styles.success}>{success}</Text>}
 
         <View style={globalStyle.marginBottom24}>
-          <Button title="Registration" onPress={handleRegister} />
+          <Button
+            isDisabled={
+              fullName.length <= 2 || email.length <= 5 || password.length < 8
+            }
+            title="Registration"
+            onPress={handleRegister}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
